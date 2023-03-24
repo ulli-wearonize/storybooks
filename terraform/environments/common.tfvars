@@ -1,8 +1,12 @@
 app_name="storybooks"
 
-gcp_project_id="devops-directive-storybooks"
+gcp_project_id="storybooks-381119"
 
-atlas_project_id = "5f5bdb70abbd5840ca911a50"
-mongodbatlas_public_key="npxnkjot"
+mongodbatlas_public_key=""
 
-domain="devopsdirective.com"
+domain="ullrich-martini.net"
+
+atlas_public_key  = "qkccamze" 
+atlas_private_key  = "qkccamze" 
+atlas_project_id = "641db0835ee266425fd90e3c"
+atlas_org_id = "64175209a47d8b185e3f9324"

@@ -1,9 +1,10 @@
 provider "google" {
-  credentials = file("terraform-sa-key.json")
-  project     = var.gcp_project_id
+  //credentials = file("client_secret_215402347283-8odhdbkfqp8vqq32mavs1794luslf6n8.apps.googleusercontent.com.json")
+  credentials = file("/Users/ullrich/Development/Docker/DevOpsCrashCourse/storybooks/storybooks-381119-8ae71c6c6015.json")
+  project     = "storybooks-381119" #var.gcp_project_id
   region      = "us-central1"
   zone        = "us-central1-c"
-  version     = "~> 3.38"
+  //version     = "~> 3.38"
 }
 
 # IP ADDRESS
@@ -33,7 +34,7 @@ resource "google_compute_firewall" "allow_http" {
 
 # OS IMAGE
 data "google_compute_image" "cos_image" {
-  family  = "cos-81-lts"
+  family  = "cos-101-lts"
   project = "cos-cloud"
 }
 

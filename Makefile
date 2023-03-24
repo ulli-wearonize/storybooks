@@ -1,4 +1,4 @@
-PROJECT_ID=devops-directive-storybooks
+PROJECT_ID=storybooks-381119
 ZONE=us-central1-a
 
 run-local:
