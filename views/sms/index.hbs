@@ -1,0 +1,14 @@
+<h1>Enrolled Phone Numbers</h1>
+<div class="row">
+    {{#each Numbers}}
+    <div class="col s12 m4">
+        <div class="card">
+             <div class="card-content center-align">
+                {{serialNumber}}:{{phoneNumber}}<br/>
+           </div>
+        </div>
+    </div>
+    {{else}}
+    <p>No stories to display</p>
+    {{/each}}
+</div>

@@ -45,8 +45,9 @@ terraform-action: check-env
 
 ###
 
-SSH_STRING=palas@storybooks-vm-$(ENV)
-OAUTH_CLIENT_ID=542106262510-8ki8hqgu7kmj2b3arjdqvcth3959kmmv.apps.googleusercontent.com
+#gcloud compute ssh --zone "us-central1-a" "storybooks-vm-staging"  --project "storybooks-381119"
+SSH_STRING=ullrich@storybooks-vm-$(ENV)
+OAUTH_CLIENT_ID=215402347283-8odhdbkfqp8vqq32mavs1794luslf6n8.apps.googleusercontent.com
 
 GITHUB_SHA?=latest
 LOCAL_TAG=storybooks-app:$(GITHUB_SHA)
@@ -73,6 +74,9 @@ push:
 	docker tag $(LOCAL_TAG) $(REMOTE_TAG)
 	docker push $(REMOTE_TAG)
 
+auth:
+	gcloud auth configure-docker
+
 deploy: check-env
 	$(MAKE) ssh-cmd CMD='docker-credential-gcr configure-docker'
 	@echo "pulling new container image..."
@@ -86,8 +90,14 @@ deploy: check-env
 			--restart=unless-stopped \
 			-p 80:3000 \
 			-e PORT=3000 \
-			-e \"MONGO_URI=mongodb+srv://storybooks-user-$(ENV):$(call get-secret,atlas_user_password_$(ENV))@storybooks-$(ENV).kkwmy.mongodb.net/$(DB_NAME)?retryWrites=true&w=majority\" \
+			-e \"MONGO_URI=mongodb+srv://storybook-user-$(ENV):$(call get-secret,atlas_user_password_$(ENV))@storybooks-$(ENV).i6ihggz.mongodb.net/?retryWrites=true&w=majority\" \
 			-e GOOGLE_CLIENT_ID=$(OAUTH_CLIENT_ID) \
 			-e GOOGLE_CLIENT_SECRET=$(call get-secret,google_oauth_client_secret) \
+			-e GOOGLE_CALLBACK_URL=https://storybooks-staging.ullrich-martini.net \
 			$(REMOTE_TAG) \
 			'
+
+
+#mongodb+srv://storybook-user:<password>@storybooks-staging.i6ihggz.mongodb.net/?retryWrites=true&w=majority
+#mongodb+srv://storybook-user-$(ENV):$(call get-secret,atlas_user_password_$(ENV))@storybooks-$(ENV).i6ihggz.mongodb.net/?retryWrites=true&w=majority
+#mongodb+srv://storybooks-user-$(ENV):$(call get-secret,atlas_user_password_$(ENV))@storybooks-$(ENV).kkwmy.mongodb.net/$(DB_NAME)?retryWrites=true&w=majority

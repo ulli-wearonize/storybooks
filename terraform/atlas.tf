@@ -80,8 +80,8 @@ resource "mongodbatlas_cluster" "my_cluster" {
 # Create an Atlas Admin Database User
 #
 resource "mongodbatlas_database_user" "my_user" {
-  username           = "storybook-user"
-  password           = var.atlas_user_password //"rSaD1o50altmaLJy"
+  username           = "storybook-user-${terraform.workspace}" //added -staging but this exists already look whether this is create at atlas
+  password           = var.atlas_user_password 
   project_id         = mongodbatlas_project.my_project.id
   auth_database_name = "admin"
 
