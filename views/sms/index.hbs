@@ -1,14 +1,21 @@
-<h1>Enrolled Phone Numbers</h1>
-<div class="row">
-    {{#each Numbers}}
-    <div class="col s12 m4">
-        <div class="card">
-             <div class="card-content center-align">
-                {{serialNumber}}:{{phoneNumber}}<br/>
-           </div>
-        </div>
-    </div>
+<h3>Enrolled Phone Numbers</h3>
+<table class="striped">
+    <tbody>
+    {{#each numbers}}
+        <tr>
+            <td>
+             {{_id}}:{{serialNumber}}:{{phoneNumber}}
+             </td><td>
+                <form action="/sms/{{_id}}" method="POST" id="delete-form">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn red">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
     {{else}}
-    <p>No stories to display</p>
+        <p>No numbers to display</p>
     {{/each}}
-</div>
+    </tbody>
+</table>
