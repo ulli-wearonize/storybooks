@@ -1,6 +1,7 @@
 provider "google" {
   //credentials = file("client_secret_215402347283-8odhdbkfqp8vqq32mavs1794luslf6n8.apps.googleusercontent.com.json")
-  credentials = file("/Users/ullrich/Development/Docker/DevOpsCrashCourse/storybooks/storybooks-381119-8ae71c6c6015.json")
+  //credentials = file("/Users/ullrich/Development/Docker/DevOpsCrashCourse/storybooks/storybooks-381119-8ae71c6c6015.json")
+  credentials = file("/Users/ullrich/Development/Docker/DevOpsCrashCourse/storybooks/storybooks-381119-7782437488d9.json")
   project     = "storybooks-381119" #var.gcp_project_id
   region      = "us-central1"
   zone        = "us-central1-c"

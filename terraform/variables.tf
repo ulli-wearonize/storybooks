@@ -3,6 +3,10 @@ variable "app_name" {
   type = string
 }
 
+#variable "OAUTH_CLIENT_ID" {
+#  type = string
+#}
+
 ### ATLAS
 variable "atlas_project_id" {
   type = string

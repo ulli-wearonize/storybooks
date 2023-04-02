@@ -1,0 +1,25 @@
+
+POST http://localhost:3000/sms/register HTTP/1.1
+content-type: application/json
+
+
+{
+    "serialNumber": "1234"
+    "phoneNumber": "+1733764746"
+}
+
+######
+
+POST http://localhost:3000/sms/deletePhoneNumber HTTP/1.1
+content-type: application/json
+
+{
+    "phoneNumber": "+1733764746"
+}
+
+########
+
+GET http://localhost:3000/sms/numbers HTTP/1.1
+content-type: application/json
+
+########
