@@ -94,6 +94,8 @@ deploy: check-env
 			-e GOOGLE_CLIENT_ID=$(OAUTH_CLIENT_ID) \
 			-e GOOGLE_CLIENT_SECRET=$(call get-secret,google_oauth_client_secret) \
 			-e GOOGLE_CALLBACK_URL=https://storybooks-staging.ullrich-martini.net \
+			-e TWILIO_ACCOUNT_SID=$(call get-secret,twilio_SID) \
+			-e TWILIO_AUTH_TOKEN=$(call get-secret,twilio_AuthToken) \
 			$(REMOTE_TAG) \
 			'
 

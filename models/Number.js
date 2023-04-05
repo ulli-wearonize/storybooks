@@ -9,6 +9,10 @@ const NumberSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  date: {
+    type: Date,
+    required: true,
+  },
 })
 
 module.exports = mongoose.model('Number', NumberSchema)

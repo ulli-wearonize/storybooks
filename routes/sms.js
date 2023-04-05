@@ -4,6 +4,19 @@ const { ensureAuth } = require('../middleware/auth')
 
 const Number = require('../models/Number')
 
+function sendToTwilio(recipient) {
+  const accountSid = process.env.TWILIO_ACCOUNT_SID;
+  const authToken = process.env.TWILIO_AUTH_TOKEN;
+  const client = require('twilio')(accountSid, authToken);
+  client.messages.create({
+     body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
+     from: '+15017122661',
+     to: recepient
+   })
+  .then(message => console.log(message.sid));
+}
+
+
 router.get('/test',(req, res) => {
   response = {status: 'ok'};
   //res.end(JSON.stringify(response));
@@ -29,8 +42,12 @@ router.post('/send', async (req, res) => {
 // @desc    register phone Number
 // @route   POST /sms/register
 router.post('/register', async (req, res) => {
+  const dateNow = Date.now()
   const filter = { serialNumber: req.body.serialNumber };
-  const update = { serialNumber: req.body.serialNumber, phoneNumber: req.body.phoneNumber };
+  const update = { 
+    serialNumber: req.body.serialNumber, 
+    phoneNumber: req.body.phoneNumber,
+    date: dateNow };
   try {
     match = await Number.findOneAndUpdate(filter, update, {
       new: true,
@@ -40,6 +57,7 @@ router.post('/register', async (req, res) => {
     console.log('req.body.serialNumber: %s',req.body.serialNumber)
     console.log('req.body.phoneNumber: %s',req.body.phoneNumber)
     console.log('match: %s' , JSON.stringify(match))
+    console.log('date: %s' , JSON.stringify(dateNow ))
     console.log('count: %d' , JSON.stringify(count))
     res.end(JSON.stringify({'status': 'ok'}));
   } catch (err) {
@@ -94,8 +112,6 @@ router.get('/render/numbers', ensureAuth, async (req, res) => {
     //TODO more than one result unexpected
     const numbers = await Number.find().lean()
     //console.log('mongo query result: %s',JSON.stringify(numbers))
-    response = {'serialNumber':numbers[0].serialNumber, 'phoneNumber':numbers[0].phoneNumber}
-    //console.log(response)
     res.render('sms/index',{numbers})
   }catch(err){
     console.error(err)

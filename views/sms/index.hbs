@@ -4,7 +4,7 @@
     {{#each numbers}}
         <tr>
             <td>
-             {{_id}}:{{serialNumber}}:{{phoneNumber}}
+             {{_id}}:{{serialNumber}}:{{phoneNumber}}:{{date}}
              </td><td>
                 <form action="/sms/{{_id}}" method="POST" id="delete-form">
                     <input type="hidden" name="_method" value="DELETE">
