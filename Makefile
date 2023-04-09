@@ -48,6 +48,7 @@ terraform-action: check-env
 #gcloud compute ssh --zone "us-central1-a" "storybooks-vm-staging"  --project "storybooks-381119"
 SSH_STRING=ullrich@storybooks-vm-$(ENV)
 OAUTH_CLIENT_ID=215402347283-8odhdbkfqp8vqq32mavs1794luslf6n8.apps.googleusercontent.com
+OAUTH_APP_ID=215402347283-tor8ih2hjoce5f10rmuigjcla400mads.apps.googleusercontent.com
 
 GITHUB_SHA?=latest
 LOCAL_TAG=storybooks-app:$(GITHUB_SHA)
@@ -92,14 +93,14 @@ deploy: check-env
 			-e PORT=3000 \
 			-e \"MONGO_URI=mongodb+srv://storybook-user-$(ENV):$(call get-secret,atlas_user_password_$(ENV))@storybooks-$(ENV).i6ihggz.mongodb.net/?retryWrites=true&w=majority\" \
 			-e GOOGLE_CLIENT_ID=$(OAUTH_CLIENT_ID) \
+			-e GOOGLE_APP_ID=$(OAUTH_APP_ID) \
 			-e GOOGLE_CLIENT_SECRET=$(call get-secret,google_oauth_client_secret) \
-			-e GOOGLE_CALLBACK_URL=https://storybooks-staging.ullrich-martini.net \
+			-e GOOGLE_CALLBACK_URL=https://storybooks-staging.ullrich-martini.net/auth/google/callback\
 			-e TWILIO_ACCOUNT_SID=$(call get-secret,twilio_SID) \
 			-e TWILIO_AUTH_TOKEN=$(call get-secret,twilio_AuthToken) \
+			-e TWILIO_FROM_NUMBER=$(call get-secret,twilio_Number) \
+			-e BASIC_AUTH=$(call get-secret,basicAuth) \
 			$(REMOTE_TAG) \
 			'
 
 
-#mongodb+srv://storybook-user:<password>@storybooks-staging.i6ihggz.mongodb.net/?retryWrites=true&w=majority
-#mongodb+srv://storybook-user-$(ENV):$(call get-secret,atlas_user_password_$(ENV))@storybooks-$(ENV).i6ihggz.mongodb.net/?retryWrites=true&w=majority
-#mongodb+srv://storybooks-user-$(ENV):$(call get-secret,atlas_user_password_$(ENV))@storybooks-$(ENV).kkwmy.mongodb.net/$(DB_NAME)?retryWrites=true&w=majority
