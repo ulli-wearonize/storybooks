@@ -31,12 +31,14 @@ function verifyGoogleIdToken(token){
       //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
     });
     const payload = ticket.getPayload();
-    console.log(payload)
     const userid = payload['sub'];
     // If request specified a G Suite domain:
     // const domain = payload['hd'];
-} 
-verify().catch(console.error);
+    var result = { email: payload['email'], sub: payload['sub']}
+    console.log(result)
+    return result
+  } 
+  return verify().catch(console.error);
 }
 
 
@@ -82,8 +84,9 @@ router.post('/register', async (req, res) => {
     console.log('req.body.googleIdToken: %s',req.body.googleIdToken)
     console.log('match: %s' , JSON.stringify(match))
     console.log('date: %s' , JSON.stringify(dateNow ))
-    console.log('count: %d' , JSON.stringify(count))
-    verifyGoogleIdToken(req.body.googleIdToken)
+    //console.log('count: %d' , JSON.stringify(count))
+    user = await verifyGoogleIdToken(req.body.googleIdToken)
+    console.log(user)
     res.end(JSON.stringify({'status': 'ok'}));
   } catch (err) {
     console.error(err)
