@@ -1,0 +1,44 @@
+
+POST http://storybooks-staging.ullrich-martini.net/sms/register HTTP/1.1
+content-type: application/json
+
+{
+    "serialNumber": "e581f02dc2fdb929efb8961b3b3351b21ac1fa75db9744b1b5661b0d8aa780db",
+    "phoneNumber": "+491733764746"
+}
+
+######
+
+GET https://storybooks-staging.ullrich-martini.net/sms/numbers HTTP/1.1
+content-type: application/json
+
+######
+
+POST https://storybooks-staging.ullrich-martini.net/sms/send HTTP/1.1
+Authorization: Basic user:passwd
+content-type: application/json
+
+{
+    "serialNumber": "DEADBEEF",
+    "text": "some fancy text"
+}
+#####
+
+POST https://storybooks-staging.ullrich-martini.net/sms/send HTTP/1.1
+Authorization: Basic user:not passwd
+content-type: application/json
+
+{
+    "serialNumber": "DEADBEEF",
+    "text": "some fancy text"
+}
+
+#######
+
+POST https://storybooks-staging.ullrich-martini.net/sms/deletePhoneNumber HTTP/1.1
+content-type: application/json
+
+{
+    "phoneNumber": "+1733764746"
+}
+
