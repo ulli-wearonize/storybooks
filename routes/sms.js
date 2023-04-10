@@ -35,10 +35,20 @@ function verifyGoogleIdToken(token){
     // If request specified a G Suite domain:
     // const domain = payload['hd'];
     var result = { email: payload['email'], sub: payload['sub']}
-    console.log(result)
     return result
   } 
   return verify().catch(console.error);
+}
+
+function checkEmail(email){
+  if (email == "workspace@ullrich.martini.name") return true
+  if (email == "rafael.viecelli@ost.ch") return true
+  return false
+}
+
+function checkSub(sub){
+  //if (sub == "") return true
+  return true
 }
 
 
@@ -55,8 +65,9 @@ router.post('/send', ensureHttpBasic, async (req, res) => {
   console.log('req.body.serialNumber: %s',req.body.serialNumber)
   console.log('req.body.text: %s',req.body.text)
   console.log('req.body: %s', req.body);
-  match = await Number.find( { serialNumber: "e581f02dc2fdb929efb8961b3b3351b21ac1fa75db9744b1b5661b0d8aa780db" } );
+  match = await Number.find( { serialNumber: req.body.serialNumber } );
   console.log(JSON.stringify(match));
+  console.log(match[0].phoneNumber)
   //sendToTwilio(match[0].phoneNumber)
   //response = {status: 'ok'};
   //res.end(JSON.stringify(response));
@@ -86,7 +97,8 @@ router.post('/register', async (req, res) => {
     console.log('date: %s' , JSON.stringify(dateNow ))
     //console.log('count: %d' , JSON.stringify(count))
     user = await verifyGoogleIdToken(req.body.googleIdToken)
-    console.log(user)
+    console.log(user.email)
+    userAllowed = checkEmail()
     res.end(JSON.stringify({'status': 'ok'}));
   } catch (err) {
     console.error(err)
