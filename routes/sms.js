@@ -40,9 +40,17 @@ function verifyGoogleIdToken(token){
   return verify().catch(console.error);
 }
 
+function checkApiKey(apiKey){
+  if(apiKey=="36445377vr22437gsjs") return true
+  return false
+}
+
 function checkEmail(email){
   if (email == "workspace@ullrich.martini.name") return true
   if (email == "rafael.viecelli@ost.ch") return true
+  if (email == "Industrieprojekt.OST@gmail.com") return true
+  lowercase_email = email.toLowerCase()
+  if (lowercase_email == "industrieprojekt.ost@gmail.com") return true
   return false
 }
 
@@ -68,11 +76,11 @@ router.post('/send', ensureHttpBasic, async (req, res) => {
   match = await Number.find( { serialNumber: req.body.serialNumber } );
   console.log(JSON.stringify(match));
   console.log(match[0].phoneNumber)
-  //sendToTwilio(match[0].phoneNumber)
-  //response = {status: 'ok'};
-  //res.end(JSON.stringify(response));
+  sendToTwilio(match[0].phoneNumber)
+  response = {status: 'ok'};
+  res.end(JSON.stringify(response));
   //res.end(body);
-  res.end(JSON.stringify(match));
+  //res.end(JSON.stringify(match));
 })
 
 // @desc    register phone Number
@@ -83,7 +91,13 @@ router.post('/register', async (req, res) => {
   const update = { 
     serialNumber: req.body.serialNumber, 
     phoneNumber: req.body.phoneNumber,
-    date: dateNow };
+    name: req.body.name,
+    date: dateNow};
+  console.log('apiKey: %s' , req.body.apiKey)
+  userAllowed=checkApiKey(req.body.apiKey);
+  if (!userAllowed){
+    res.end(JSON.stringify({'status': 'user not allowed'}));
+  }
   try {
     match = await Number.findOneAndUpdate(filter, update, {
       new: true,
@@ -93,13 +107,18 @@ router.post('/register', async (req, res) => {
     console.log('req.body.serialNumber: %s',req.body.serialNumber)
     console.log('req.body.phoneNumber: %s',req.body.phoneNumber)
     console.log('req.body.googleIdToken: %s',req.body.googleIdToken)
+    console.log('req.body.name: %s',req.body.name)
+    console.log('req.body.name: %s',req.body.name)
     console.log('match: %s' , JSON.stringify(match))
-    console.log('date: %s' , JSON.stringify(dateNow ))
+    console.log('apiKey: %s' , req.body.apiKey)
     //console.log('count: %d' , JSON.stringify(count))
-    user = await verifyGoogleIdToken(req.body.googleIdToken)
-    console.log(user.email)
-    userAllowed = checkEmail()
+    //user = await verifyGoogleIdToken(req.body.googleIdToken)
+    //console.log(user.email)
+    //userAllowed = checkEmail(user.email)
     res.end(JSON.stringify({'status': 'ok'}));
+    res.end(JSON.stringify({'status': 'user not allowed'}));
+
+    
   } catch (err) {
     console.error(err)
     res.end(JSON.stringify({'status': 'fail'}));
@@ -149,7 +168,7 @@ router.get('/numbers', async (req, res) => {
 // @desc    list enrolled pairs
 // @route   GET /sms/render/numbers
 router.get('/render/numbers', ensureAuth, async (req, res) => {
-  try{
+    try{
     console.log(req.user)
     //TODO more than one result unexpected
     const numbers = await Number.find().lean()

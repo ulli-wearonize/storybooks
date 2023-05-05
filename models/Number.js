@@ -13,6 +13,10 @@ const NumberSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  name: {
+    type: String,
+    required: false,
+  },
 })
 
 module.exports = mongoose.model('Number', NumberSchema)
